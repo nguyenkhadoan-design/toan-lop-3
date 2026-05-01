@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Máy Tính Kẹo Thông Minh - Trắc Nghiệm 🎁</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            text-align: center;
+            color: #2d3436;
+        }
+        #container {
+            max-width: 750px;
+            margin: 25px auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        h1 {
+            color: #ff7675;
+            margin-bottom: 15px;
+        }
+        .input-group {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        input {
+            font-size: 20px;
+            padding: 8px;
+            width: 80px;
+            text-align: center;
+            border: 2px solid #0984e3;
+            border-radius: 10px;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            outline: none;
+        }
+        #step-display {
+            font-size: 22px;
+            font-weight: bold;
+            color: #0984e3;
+            margin: 15px 0;
+            min-height: 55px;
+            line-height: 1.4;
+        }
+        #total-display {
+            font-size: 26px;
+            color: #00b894;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        /* Khu vực câu hỏi trắc nghiệm */
+        .quiz-container {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        .quiz-question {
+            font-size: 22px;
+            font-weight: bold;
+            color: #e1b12c;
+            margin-bottom: 10px;
+        }
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .quiz-option {
+            background: #ff7f50;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+        .quiz-option:hover {
+            background: #ff6348;
+            transform: translateY(-2px);
+        }
+        
+        .box-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .item-box {
+            background: #ffeaa7;
+            border: 3px solid #fdcb6e;
+            border-radius: 10px;
+            padding: 15px;
+            width: 160px;
+            transition: all 0.4s ease;
+            opacity: 0.2; /* Mờ khi chưa mở bước */
+        }
+        .item-box span {
+            display: block;
+            font-size: 18px;
+            font-weight: bold;
+            color: #d63031;
+        }
+        #gift-box-area {
+            margin: 20px auto;
+            font-size: 50px;
+            min-height: 70px;
+            transition: transform 0.5s;
+        }
+        .action-button {
+            background-color: #ff6b81;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: all 0.3s;
+            margin: 5px;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+        .action-button:hover {
+            background-color: #ff4757;
+            transform: translateY(-3px);
+        }
+        #music-controls {
+            margin-top: 15px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="container">
+        <h1>🎁 Máy Tính Kẹo Thông Minh 🎁</h1>
+        
+        <div class="input-group">
+            Nhập phép tính: 
+            <input type="number" id="numA" value="12" min="1" max="99"> 
+            × 
+            <input type="number" id="numB" value="123" min="1" max="999">
+        </div>
+        
+        <button class="action-button" onclick="loadNewGame()">Tải phép tính mới 🚀</button>
+
+        <div class="quiz-container">
+            <div class="quiz-question">Chọn đáp án đúng:</div>
+            <div class="options-grid">
+                <button class="quiz-option" id="optA" onclick="checkAnswer(0)">A: ?</button>
+                <button class="quiz-option" id="optB" onclick="checkAnswer(1)">B: ?</button>
+                <button class="quiz-option" id="optC" onclick="checkAnswer(2)">C: ?</button>
+                <button class="quiz-option" id="optD" onclick="checkAnswer(3)">D: ?</button>
+            </div>
+        </div>
+
+        <div id="step-display">Bé hãy chọn đáp án bên trên trước nhé!</div>
+        
+        <div class="box-container">
+            <div class="item-box" id="hundred-part">
+                <span>Hàng trăm</span>
+                <p id="hundred-text">...</p>
+            </div>
+            <div class="item-box" id="ten-part">
+                <span>Hàng chục</span>
+                <p id="ten-text">...</p>
+            </div>
+            <div class="item-box" id="unit-part">
+                <span>Đơn vị</span>
+                <p id="unit-text">...</p>
+            </div>
+        </div>
+
+        <div id="total-display">Tổng kết quả: ?</div>
+
+        <div id="gift-box-area">📦</div>
+
+        <div>
+            <button class="action-button" onclick="openBox()">Mở hộp quà 📦</button>
+            <button class="action-button" onclick="resetGame()">Làm lại 🔄</button>
+        </div>
+
+        <div id="music-controls">
+            <button class="action-button" onclick="toggleMusic()">🎵 Bật/Tắt Nhạc</button>
+            <span id="music-status">Nhạc đang tắt</span>
+        </div>
+    </div>
+
+    <script>
+        // Cấu hình nhạc nền
+        let bgMusic = new Audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
+        bgMusic.loop = true;
+        
+        function toggleMusic() {
+            if (bgMusic.paused) {
+                bgMusic.play().catch(() => console.log("Trình duyệt chặn phát nhạc tự động."));
+                document.getElementById('music-status').innerText = "🎵 Nhạc đang phát";
+            } else {
+                bgMusic.pause();
+                document.getElementById('music-status').innerText = "Nhạc đang tắt";
+            }
+        }
+
+        function playSound(freq, duration, type = 'sine') {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = type;
+                osc.frequency.value = freq;
+                gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + duration);
+            } catch(e) {}
+        }
+
+        let step = 0;
+        let factorA = 12;
+        let factorB = 123;
+        let hundredVal = 0, tenVal = 0, unitVal = 0;
+        let sum = 0;
+        let correctAnswer = 0;
+        let hasChosen = false;
+
+        function loadNewGame() {
+            factorA = parseInt(document.getElementById('numA').value) || 0;
+            factorB = parseInt(document.getElementById('numB').value) || 0;
+
+            const h = Math.floor(factorB / 100);
+            const t = Math.floor((factorB % 100) / 10);
+            const u = factorB % 10;
+
+            hundredVal = factorA * (h * 100);
+            tenVal = factorA * (t * 10);
+            unitVal = factorA * u;
+            sum = hundredVal + tenVal + unitVal;
+
+            document.getElementById('hundred-text').innerText = `${factorA} × ${h * 100} = ${hundredVal}`;
+            document.getElementById('ten-text').innerText = `${factorA} × ${t * 10} = ${tenVal}`;
+            document.getElementById('unit-text').innerText = `${factorA} × ${u} = ${unitVal}`;
+
+            // Tạo các đáp án trắc nghiệm
+            let answers = [sum];
+            while (answers.length < 4) {
+                let fake = sum + Math.floor((Math.random() - 0.5) * 50);
+                if (fake > 0 && !answers.includes(fake) && fake !== sum) {
+                    answers.push(fake);
+                }
+            }
+            
+            // Trộn thứ tự đáp án
+            answers.sort(() => Math.random() - 0.5);
+            correctAnswer = answers.indexOf(sum);
+
+            // Gán vào nút bấm
+            document.getElementById('optA').innerText = "A: " + answers[0];
+            document.getElementById('optB').innerText = "B: " + answers[1];
+            document.getElementById('optC').innerText = "C: " + answers[2];
+            document.getElementById('optD').innerText = "D: " + answers[3];
+
+            resetGame();
+            document.getElementById('step-display').innerText = "Hãy tích chọn đáp án đúng trước nhé!";
+        }
+
+        function checkAnswer(index) {
+            hasChosen = true;
+            if (index === correctAnswer) {
+                document.getElementById('step-display').innerText = "🎉 Đúng rồi! Giờ hãy bấm nút Mở hộp quà bên dưới để kiểm tra các bước tính toán nhé!";
+                playSound(800, 0.4, 'sine');
+            } else {
+                document.getElementById('step-display').innerText = "Đáp án chưa đúng. Không sao cả! Hãy bấm Mở hộp quà để xem cách tính nhé!";
+                playSound(300, 0.4, 'sawtooth');
+            }
+        }
+
+        function openBox() {
+            if (!hasChosen) {
+                document.getElementById('step-display').innerText = "⚠️ Hãy chọn đáp án trắc nghiệm trước khi mở hộp!";
+                return;
+            }
+
+            step++;
+            if (step === 1) {
+                document.getElementById('hundred-part').style.opacity = '1';
+                document.getElementById('step-display').innerText = `Bước 1: Nhân kẹo hàng trăm (${factorA} × ${Math.floor(factorB / 100) * 100} = ${hundredVal})`;
+                document.getElementById('total-display').innerText = `Tích lũy: ${hundredVal}`;
+                playSound(600, 0.3);
+            } else if (step === 2) {
+                document.getElementById('ten-part').style.opacity = '1';
+                document.getElementById('step-display').innerText = `Bước 2: Nhân kẹo hàng chục (${factorA} × ${Math.floor((factorB % 100) / 10) * 10} = ${tenVal})`;
+                document.getElementById('total-display').innerText = `Tích lũy: ${hundredVal} + ${tenVal} = ${hundredVal + tenVal}`;
+                playSound(800, 0.3);
+            } else if (step === 3) {
+                document.getElementById('unit-part').style.opacity = '1';
+                document.getElementById('step-display').innerText = `Bước 3: Nhân kẹo hàng đơn vị (${factorA} × ${factorB % 10} = ${unitVal})`;
+                document.getElementById('total-display').innerText = `Tích lũy: ${hundredVal + tenVal} + ${unitVal} = ${sum}`;
+                playSound(1000, 0.3);
+            } else if (step === 4) {
+                document.getElementById('gift-box-area-text');
+                document.getElementById('gift-box-area').innerText = "🍬🍭🍫🎉";
+                document.getElementById('gift-box-area').style.transform = "scale(1.3)";
+                document.getElementById('step-display').innerText = `🎉 Hoàn thành! Đáp án là ${sum}. Kẹo của bé đây!`;
+                playSound(400, 0.5, 'square');
+            } else {
+                step = 4;
+            }
+        }
+
+        function resetGame() {
+            step = 0;
+            hasChosen = false;
+            document.getElementById('hundred-part').style.opacity = '0.2';
+            document.getElementById('ten-part').style.opacity = '0.2';
+            document.getElementById('unit-part').style.opacity = '0.2';
+            document.getElementById('gift-box-area').innerText = "📦";
+            document.getElementById('gift-box-area').style.transform = "scale(1)";
+            document.getElementById('step-display').innerText = "Chọn đáp án đúng bên trên trước nhé!";
+            document.getElementById('total-display').innerText = "Tổng kết quả: ?";
+        }
+
+        // Tải phép tính mặc định khi vừa vào
+        loadNewGame();
+    </script>
+</body>
+</html>
